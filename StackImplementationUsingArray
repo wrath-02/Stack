@@ -1,0 +1,74 @@
+
+public class StackImplementationUsingArray{   //same logic for arrayList
+    public static class Stack{
+        private int[] arr =new int[5];// can take user input
+        private int idx=0;
+        
+        void push(int n){
+            if(isFull()){
+                System.out.println("Stack is full ....Condition : OverFlow");
+                return;
+            }
+            arr[idx]=n;
+            idx++;
+        }
+        
+        int pop(){
+            if(isEmpty()){
+                System.out.println("Stack is Empty ....Condition : UnderFlow");
+                return -1;
+            }
+            int top = arr[idx-1];
+            arr[idx-1]=0;
+            idx--;
+            return top;
+            
+        }
+        
+        int peek(){
+            if(idx==0){
+                System.out.println("Stack is Empty ....");
+                return -1;
+            }
+            
+            return arr[idx-1];
+        }
+        
+        boolean isFull(){
+            if(idx == arr.length) return true;
+            return false;
+        }
+        
+        boolean isEmpty(){
+            if(idx == 0) return true;
+            return false;
+        }
+        
+        void display(){
+            for(int i =0;i<=idx-1;i++){
+                System.out.print(arr[i]+" ");
+            }
+            System.out.println();
+        }
+        
+        int size(){
+            return idx;
+        }
+        
+    }
+    public static void main(String[] args) {
+        Stack st =new Stack();
+        st.push(10);
+        st.push(20);
+        st.push(30);
+        st.push(40);
+        st.push(50);
+        st.display();
+        System.out.println(st.size());
+        System.out.println(st.peek());
+        st.pop();
+        st.pop();
+        st.display();
+        System.out.println(st.size());
+    }
+}
