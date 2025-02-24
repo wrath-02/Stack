@@ -1,0 +1,50 @@
+import java.util.Stack;
+
+public class Infix {
+    public static void main(String[] args) {
+        String s = "9-5+3*4/6";  // Example expression
+        System.out.println("Expression: " + s);
+
+        Stack<Integer> num = new Stack<>();
+        Stack<Character> op = new Stack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            
+            if (Character.isDigit(ch)) {
+                num.push(ch - '0');  // Convert char to integer
+            } 
+            else {  
+                while (!op.isEmpty() && precedence(op.peek()) >= precedence(ch)) {
+                    process(num, op);
+                }
+                op.push(ch);
+            }
+        }
+
+        while (!op.isEmpty()) {
+            process(num, op);
+        }
+
+        System.out.println("Result: " + num.peek());
+    }
+
+    // Function to determine operator precedence
+    private static int precedence(char ch) {
+        if (ch == '+' || ch == '-') return 1;
+        if (ch == '*' || ch == '/') return 2;
+        return 0;
+    }
+
+    // Function to process an operation
+    private static void process(Stack<Integer> num, Stack<Character> op) {
+        int v2 = num.pop();
+        int v1 = num.pop();
+        char operator = op.pop();
+
+        if (operator == '+') num.push(v1 + v2);
+        else if (operator == '-') num.push(v1 - v2);
+        else if (operator == '*') num.push(v1 * v2);
+        else if (operator == '/') num.push(v1 / v2);
+    }
+}
