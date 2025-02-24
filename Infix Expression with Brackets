@@ -1,0 +1,60 @@
+import java.util.Stack;
+
+public class Infix {
+    public static void main(String[] args) {
+        String s = "(9-5)+3*(4/2)";  // Example expression
+        System.out.println(s);
+
+        Stack<Integer> num = new Stack<>();
+        Stack<Character> op = new Stack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            int ascii = (int) (ch);
+
+            if (ascii >= 48 && ascii <= 57) {
+                num.push(ascii - 48); // Convert character to integer
+            } 
+            else if (ch == '(') {
+                op.push(ch);  // Push '(' onto the operator stack
+            } 
+            else if (ch == ')') {
+                // Process until '(' is found
+                while (!op.isEmpty() && op.peek() != '(') {
+                    process(num, op);
+                }
+                op.pop(); // Remove '('
+            } 
+            else {
+                // Operator handling
+                while (!op.isEmpty() && precedence(op.peek()) >= precedence(ch)) {
+                    process(num, op);
+                }
+                op.push(ch);
+            }
+        }
+
+        while (!op.isEmpty()) {
+            process(num, op);
+        }
+
+        System.out.println(num.peek());  // Final result
+    }
+
+    private static int precedence(char ch) {
+        if (ch == '+' || ch == '-') return 1;
+        if (ch == '*' || ch == '/') return 2;
+        return 0;
+    }
+
+    private static void process(Stack<Integer> num, Stack<Character> op) {
+        int v2 = num.pop();
+        int v1 = num.pop();
+        char operator = op.pop();
+
+        if (operator == '+') num.push(v1 + v2);
+        else if (operator == '-') num.push(v1 - v2);
+        else if (operator == '*') num.push(v1 * v2);
+        else if (operator == '/') num.push(v1 / v2);
+    }
+}
